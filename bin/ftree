@@ -1,0 +1,41 @@
+#!/bin/bash
+# ftree — 文件树导航器 v2
+VERSION="2.0.0"
+case "${1:-}" in
+    --help|-h)
+        echo "🌳 ftree v${VERSION} — 文件树导航器"
+        echo ""
+        echo "用法:"
+        echo "  ftree                 终端目录树 (rich 彩色)"
+        echo "  ftree --widget DIR    桌面置顶小窗 (推荐)"
+        echo "  ftree --fzf DIR       快速目录跳转"
+        echo "  ftree --watch DIR     终端实时监听"
+        echo "  ftree --json DIR      JSON 输出"
+        echo "  fcd DIR               fzf 快速跳转 + cd"
+        echo "  fcdw                  从 widget 确认的目录 cd"
+        ;;
+    --widget|-g)
+        shift; exec /home/linhua/scripts/ftree-widget.py "${@:-.}"
+        ;;
+    --fzf|-f)
+        shift; target=$(/home/linhua/scripts/ftree-fzf.sh --cd "${@:-.}") && cd "$target"
+        ;;
+    --watch|-w)
+        shift; exec /home/linhua/scripts/ftree.py --watch "${@:-.}"
+        ;;
+    --json|-j)
+        shift; exec /home/linhua/scripts/ftree.py --json "${@:-.}"
+        ;;
+    --popup|-p)
+        shift; exec /home/linhua/scripts/ftree-popup.sh "${@:-.}"
+        ;;
+    --install)
+        exec /home/linhua/scripts/ftree-fzf.sh --install
+        ;;
+    --version|-v)
+        echo "ftree v${VERSION}"
+        ;;
+    *)
+        exec /home/linhua/scripts/ftree.py "${@:-.}"
+        ;;
+esac

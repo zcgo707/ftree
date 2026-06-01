@@ -1,0 +1,8 @@
+#!/bin/bash
+# fcd — 快速目录跳转 (fzf + tree 预览)
+target=$(/home/linhua/scripts/ftree-fzf.sh --cd "${1:-.}")
+if [ $? -eq 0 ] && [ -n "$target" ] && [ -d "$target" ]; then
+    cd "$target"
+    echo -e "\033[1;32m📂 → $target\033[0m"
+    ls --color=auto
+fi
